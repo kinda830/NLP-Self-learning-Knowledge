@@ -6,7 +6,7 @@
 
 ​	对于数据集中每个样本的句子进行判断，如果超过最大训练长度，则只截取前面的词汇；而如果句子长度小于最大长度，则采用"<pad>"等字符进行填充剩余空位。如下代码示例：
 
-```
+```python
 # 将文本处理成定长
 def preprocess(data, sequence_length=3000):
     """Process the characters of each sample to a fixed length."""
@@ -243,7 +243,11 @@ cnX = cn_count_model.fit_transform(documents_after)
 print(u'共生矩阵：')
 #cnXdense = cnX.todense()
 #%time XTX = np.dot(cnXdense.T, cnXdense)
-%time XTX = cnX.T * cnX
+#%time XTX = cnX.T * cnX
+start_time = time.time()
+XTX = cnX.T * cnX
+end_time = time.time()
+print("time:", end_time - start_time)
 print(XTX.todense(), '\n')
 
 print(u'词-文矩阵对应的特征索引号（矩阵列的序号）：')
@@ -471,7 +475,7 @@ def generate_batch(batch_size, cbow_window):
         buffer.append(data[data_index])
         data_index = (data_index + 1) % len(data)
 
-    assert batch_size[0] == batch_size 
+    assert batch_size[0] == batch_size
     assert batch_size[1] == span - 1
     return batch, labels
 ```
@@ -535,8 +539,6 @@ if __name__ == '__main__':
         avg_embed =  tf.reduce_mean(embeds, 2, keep_dims=False)
         print("Avg embedding size: %s"%avg_embed.get_shape().as_list())
 
-
-
         loss = tf.reduce_mean(tf.nn.nce_loss(nce_weights, nce_biases,
                                labels=train_labels,
                                inputs=avg_embed,
@@ -592,6 +594,22 @@ if __name__ == '__main__':
 
 
 ## 3. 特征抽取
+
+### 3.1. word2vec
+
+​	详见 2.7 章节的介绍
+
+### 3.2. NGram
+
+​	
+
+### 3.3. ELMO
+
+### 3.4. GPT（transformer版ELMO）
+
+### 3.5. BERT（双层transformer）
+
+
 
 
 
