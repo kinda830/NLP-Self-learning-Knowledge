@@ -81,12 +81,7 @@ typora-root-url: The Illustrated Transformer
 
 ![transformer_self_attention_score](/transformer_self_attention_score.png)
 
-​	**第三步和第四步**，除以8（=
-$$
-\sqrt{dim_{key}}
-$$
-），这样梯度会更稳定。然后加上softmax操作，归一化分值使得全为正数且加和为1。
-
+​	**第三步和第四步**，除以8（ =$$\sqrt{dim_{key}}$$ ），这样梯度会更稳定。然后加上softmax操作，归一化分值使得全为正数且加和为1。
 ![self-attention_softmax](/self-attention_softmax.png)
 
 ​	softmax分值决定着在这个位置，每个词的表达程度（关注度）。很明显，这个位置的词应该有最高的归一化分数，但大部分时候总是有助于关注该词的相关的词。

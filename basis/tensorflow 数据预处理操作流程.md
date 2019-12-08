@@ -99,9 +99,10 @@
 
 4. repeat 方法：将数据集的内容重复加载几次
 
-   ```
+   ```python
    # N: 将数据集重复 N 份，即为 epoch
    dataset = dataset.repeat(N)
    ```
 
    备注：如果数据集中 repeat 前已经进行了 shuffle 操作，输出的每个 epoch 中随机 shuffle 的结果并不会相同。
+
