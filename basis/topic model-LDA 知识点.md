@@ -4,9 +4,21 @@ typora-root-url: E:\电子书\小象AI班\1. 基础知识\LDA
 
 # LDA 知识点
 
+## 1. Dirichlet Distribution
+
+
+
+## 2. LDA
+
+
+
+## 3. PLSA
+
+
+
 ​	LDA：Latent Dirichlet Allocation，topic model
 
-![topic model](LDA/topic model.png)
+![topic model](../images/LDA/topic model.png)
 
 1. 由 Dirichlet 分布生成文档的 topic 分布，即 $\theta $
 2. Z 则是一个隐含变量，对应文档中每个单词属于哪个topic，即从 $\theta$ （topic分布）采样生成；

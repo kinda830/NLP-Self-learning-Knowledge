@@ -12,7 +12,7 @@
 
 它的网络结构如下：
 
-![è¿éåå¾çæè¿°](https://img-blog.csdn.net/20171129184524844?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzk0MjI2NDI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![RNN_1](../images/RNN/RNN_1.png)
 
 ​	其中每个圆圈可以看做是一个单元，而且每个单元做的事情也是一样的，因此可以折叠呈左半图的样子。用一句话解释RNN，就是一个单元结构重复使用。
 
@@ -30,18 +30,18 @@
 
 1. 双向 RNN
 
-![è¿éåå¾çæè¿°](https://wugh.github.io/images/NLP/bi-directional-rnn.png)
+![bi-directional-rnn](../images/RNN/bi-directional-rnn.png)
 
 ​	双向 RNN 需要的内存是单向 RNN 的两倍，因为在同一时间点，双向 RNN 需要保存两个方向上的权重参数，在分类的时候，需要同时输入两个隐藏层输出的信息。
 
 2. 深层双向 RNN
 
-   ![è¿éåå¾çæè¿°](https://wugh.github.io/images/NLP/deep-bi-directional-rnn.png)
+   ![deep-bi-directional-rnn](../images/RNN/deep-bi-directional-rnn.png)
 
 ## RNN 的反向传播
 
-​	每一次的输出值Ot都会产生一个误差值Et, 则总的误差可以表示为：![img](https://img-blog.csdn.net/20180528140926466?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyMjQxMTg5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+​	每一次的输出值Ot都会产生一个误差值Et, 则总的误差可以表示为：$E = \sum_{t} e_t$
 
 则损失函数可以使用交叉熵损失函数，也可以使用平方误差损失函数。由于每一步的输出不仅仅依赖当前步的网络，并且还需要前若干步网络的状态，这种 BP 改版的算法叫做Backpropagation Through Time(**BPTT**) , 也就是将输出端的误差值反向传递,运用**梯度下降法**进行更新，具体如下：
 
-![img](https://img-blog.csdn.net/20171130091956686?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzk0MjI2NDI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![SouthEast](../images/RNN/SouthEast.png)

@@ -322,7 +322,7 @@ u1 = svd1.transform(tfidfX.T)
 
 ​	Word2Vec 模型中，主要有 Skip-Gram 和 CBOW 两种模型，从直观上理解，Skip-Gram 是给定 input word 来预测上下文。而 CBOW 是给定上下文，来预测input word。
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b306c8b3b1.png?imageMogr2/format/jpg/quality/90)
+![word2vec](../images/NLP/word2vec.png)
 
 ​	Word2Vec模型实际上分为了两个部分，**第一部分为建立模型，第二部分是通过模型获取嵌入词向量**。Word2Vec的整个建模过程实际上与自编码器（auto-encoder）的思想很相似，即先基于训练数据构建一个神经网络，当这个模型训练好以后，我们并不会用这个训练好的模型处理新的任务，我们真正需要的是这个模型通过训练数据所学得的参数，例如隐层的权重矩阵——后面我们将会看到这些权重在Word2Vec中实际上就是我们试图去学习的“word vectors”。基于训练数据建模的过程，我们给它一个名字叫“Fake Task”，意味着建模并不是我们最终的目的。
 
@@ -340,11 +340,11 @@ u1 = svd1.transform(tfidfX.T)
 
 **模型的输出概率代表着到我们词典中每个词有多大可能性跟input word同时出现**。下面的图中给出了一些我们的训练样本的例子。我们选定句子**“The quick brown fox jumps over lazy dog”**，设定我们的窗口大小为2（window_size=2），也就是说我们仅选输入词前后各两个词和输入词进行组合。下图中，蓝色代表input word，方框内代表位于窗口内的单词。
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b319eb5f1f.png?imageMogr2/format/jpg/quality/90)
+![lm](../images/NLP/lm.png)
 
 ##### 2.7.1.2. 模型细节
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b31d0920ef.png?imageMogr2/format/jpg/quality/90)
+![skip_gram](../images/NLP/skip_gram.png)
 
 ​	skip-gram 的训练模型共分三层，分别为输入层、隐层和输出层，下面分成三个部分进行讲解。
 
@@ -364,7 +364,7 @@ u1 = svd1.transform(tfidfX.T)
 2. 如果我们现在想用300个特征来表示一个单词（即每个词可以被表示为300维的向量）。那么隐层的权重矩阵应该为10000行，300列（隐层有300个结点）；
 3. 下面图片是不同角度下输入层-隐层的权重矩阵的解释：左图中每一列代表一个10000维的词向量和隐层单个神经元连接的权重向量；右图中每一行实际上代表了每个单词的词向量。
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b320f8ed60.png?imageMogr2/format/jpg/quality/90)
+![word_embedding](../images/NLP/word_embedding.png)
 
 4. 10000维下的矩阵运算是十分低效的。为了有效地进行计算，这种稀疏状态下不会进行矩阵乘法计算，可以看到矩阵的计算的结果实际上是矩阵对应的向量中值为1 的索引，这样模型中的隐层权重矩阵便成了一个“查找表”，进行矩阵运算，直接去查输入向量中取值为1的维度下对应的那些权重值。
 5. 隐层的输出就是每个输入单词的“嵌入词向量”。
@@ -374,13 +374,13 @@ u1 = svd1.transform(tfidfX.T)
 1. 经过神经网络隐层的计算，单词向量从一个1 x 10000 的向量变成 1x 300 的向量，再被输入到输出层中计算；
 2. 输出层就是一个softmax回归分类器，它的每个结点将会输出一个 0-1 之间的值（概率），这些所有输出层神经元结点的概率之和为1：
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b3267c64f4.png?imageMogr2/format/jpg/quality/90)
+![lookup](../images/NLP/lookup.png)
 
 #### 2.7.2. CBOW
 
 ​	CBOW（Continuous Bag-Of-Words Model）为连续词袋模型。跟 skip-gram 互为镜像，其训练过程是通过上下文单词预测对应的单词。示例图如下：
 
-![cbownero](https://img-blog.csdn.net/20171205202107851?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDY2NTIxNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![cbow](../images/NLP/cbow.png)
 
 ##### 2.7.2.1. 前向传播
 
@@ -421,23 +421,17 @@ E = -log(w_o|W_I)
 = -v^T_{wo}·h - log\sum^V_{j'=1}exp(v^T_{w_{j'}}·h)
 $$
 
-
-
 2. 接下来对上面的概率求导，具体推导过程可以去看 BP 算法，我们得出输出权重矩阵 W‘ 的更新规则：
 
 $$
 w'^{new} = w'^{old}_{ij} - \eta · (y_j - t_j)·h_i
 $$
 
-
-
 3. 同理权重 **W** 的更新规则如下：
 
 $$
 w^{(new)} = w^{(old)}_{ij} - \eta·\frac{1}{C}·EH
 $$
-
-
 
 ##### 2.7.2.3 tensorflow 实现 CBOW
 
@@ -616,7 +610,7 @@ if __name__ == '__main__':
 
 ​	而 ELMO 的本质思想是：我事先用语言模型学好一个单词的 word embedding，此时多义词无法区分，不过这没有关系，在我实际使用 word embedding 的时候，单词已经具备了特定的上下文，这时 ELMO 模型可以根据上下文单词的语义去调整单词的 word embedding 表示，这样经过调整后的 word  embedding 更能表达在这个上下文中的具体含义，自然也就解决了多义词的问题了。ELMO 模型网结构示意图如下：
 
-![ELMO1](.\ELMO\ELMO1.png)
+![ELMO1](../images/ELMO/ELMO1.png)
 
 ​	ELMO 采用了典型的两阶段过程，第一个阶段是利用语言模型进行预训练；第二个阶段时在做下游任务时，从预训练网络中提取对应单词的网络各层的 word embedding 作为新特征补充到下游任务重。上图展示的是预训练过程。
 
@@ -634,7 +628,7 @@ ELMO 的预训练过程不仅仅学会单词的 word embedding，还学会了一
 
 #### 3.3.4 ELMO 训练好之后如何使用
 
-![ELMO2](.\ELMO\ELMO2.png)
+![ELMO2](../images/ELMO/ELMO2.png)
 
 ​	前面介绍的是 ELMO 的第一阶段：预训练阶段。那么预训练好网络结构后，如何给下游任务使用呢？上图展示了下游任务的使用过程，比如我们的下游任务仍然是QA问题，此时对于问句X，我们可以先将句子 X 作为预训练好的 ELMO 网络的输入，这样句子 X 中每个单词在 ELMO 网络中都能获得对应的三个 Embedding，之后给予这三个 embedding 中每一个 embedding 一个权重 a，这个权重可以学习得来，根据各自权重累加求和，将三个 embedding 整合成一个。然后将整合后的这个 Embedding 作为 X 句在自己任务的那个网络结构对应单词的输入，以此作为补充的新特征给下游任务使用。
 
@@ -642,7 +636,7 @@ ELMO 的预训练过程不仅仅学会单词的 word embedding，还学会了一
 
 #### 3.3.5 多义词问题解决了吗？
 
-![ELMO3](.\ELMO\ELMO3.png)
+![ELMO3](../images/ELMO/ELMO3.png)
 
 ​	前面提到静态 word embedding 无法解决多义词的问题，那么 ELMO 引入上下文动态调整的 embedding 后多义词问题解决了吗？解决了，而且比我们期待的解决得还要好。
 
@@ -652,7 +646,7 @@ ELMO 的预训练过程不仅仅学会单词的 word embedding，还学会了一
 
 #### 3.3.6 ELMO 效果如何？
 
-![ELMO4](.\ELMO\ELMO4.png)
+![ELMO4](../images/ELMO/ELMO4.png)
 
 ​	ELMO 经过这般操作，效果如何？实验效果见上图，6个NLP任务中性能都有幅度不同的提升，最高的提升达到了 25% 左右，而且这 6 个任务的覆盖范围比较广，包含句子语义关系判断、分类任务、阅读理解等多个领域，这说明其适用范围是非常广的，普适性强，这是一个非常好的优点。
 
@@ -664,13 +658,13 @@ ELMO 的预训练过程不仅仅学会单词的 word embedding，还学会了一
 
 ​	当我们相对句子“The animal didn't cross the because it was too tired”中 “it” 这个词编码时，注意力机制的基本思想是认为这句话中每个词对 it 的语义均会有贡献。那怎么综合这些贡献呢，就是直接将每个词的 embedding 向量加权求和。所以关键的问题是如何得到每个词各自的权重，关系更近的词的权重更大。比如这句话中“The Animal”的权重就应该更大，它们的信息应该更多地编码到“it”中。自注意力机制得到权重的方法非常简单，就是两个词向量的内积。最终通过一个 softmax 将各个权重归一化。
 
-![self-attention](.\ELMO\self-attention.png)
+![self-attention](../images/ELMO/self-attention.png)
 
 ​	在上图中，颜色的粗细代表该词的权重大小，权重由该词与“it” 的内积得到，最终通过一个 softmax 将各个权重归一化。自注意力机制其实就是最原始意义的卷积的思想的推广，因为卷积本身就是一种“加权求和”。
 
 #### 3.4.2 GPT 定义
 
-![self-attention](.\ELMO\gpt1.png)
+![self-attention](../images/ELMO/gpt1.png)
 
 ​	GPT 是 “Generative Pre-Training” 的简称，从名字看其含义是指的生成式的预训练。GPT 也采用两阶段过程，第一个阶段时利用语言模型进行预训练，第二阶段通过 Fine-tuning 的模式解决下游任务。上图展示了 GPT 的预训练过程，其实和 ELMO 是类似的，主要不同在于两点：首先，特征抽取器不是用的 RNN，而是用的 Transformer，上面提到过他的特征抽取能力要强于 RNN，这个选择很明显是很明智的；其次，GPT 的预训练虽然仍然是以语言模型作为目标任务，但是采用的是单向的语言模型，所谓 “单向” 的含义是指：语言模型训练的任务目标是根据 W_i 单词的上下文去正确预测单词 W_i ，W_i 之前的单词序列 Context-before 称为上文，之后的单词序列 Context-after 称为下文。ELMO 在做语言模型预训练的时候，预测单词 W_i 同时使用上文和下文，而 GPT 则只采用 W_i 这个单词的上文 Context-before 来进行预测，而抛开了下文。这个选择现在看不是个太好的选择，原因很简单，它没有把单词的下文融合近来，这限制了其在更多应用场景的效果，比如阅读理解这种任务，在做任务的时候是可以运行同事看到上文和下文一起做决策的。如果预训练时候不把单词的下文嵌入到 word embedding 中，是很吃亏，白白丢掉了很多信息。
 
@@ -678,13 +672,13 @@ ELMO 的预训练过程不仅仅学会单词的 word embedding，还学会了一
 
 #### 3.4.3 GPT：训练好之后如何使用？
 
-![gpt2](.\ELMO\gpt2.png)
+![gpt2](../images/ELMO/gpt2.png)
 
 ​	上图展示了 GPT 在第二阶段如何使用。首先，对于不同的下游任务来说，本来你可以任意设计自己的网络结构，现在不行了，你要向 GPT 的网络结构看齐，把任务的网络结构改造成和 GPT 的网络结构是一样的。然后在做下游任务的时候，利用第一步预训练好的参数初始化 GPT 的网络结构，这样通过预训练学到的语言学知识就被引入到你手头的任务里来了，这是非常好的事情。再次，你可以用手头的任务去巡逻这个网络，对网络参数进行 Fine-tuning，使得这个网络更适合解决手头的问题。
 
 #### 3.4.4 GPT：如何改造下游任务
 
-![gpt3](.\ELMO\gpt3.png)
+![gpt3](../images/ELMO/gpt3.png)
 
 ​	GPT 论文给了一个改造施工图如上，其实也很简单：
 
@@ -697,7 +691,7 @@ ELMO 的预训练过程不仅仅学会单词的 word embedding，还学会了一
 
 #### 3.4.5 GPT 效果如何？
 
-![gpt4](.\ELMO\gpt4.png)
+![gpt4](../images/ELMO/gpt4.png)
 
 ​	GPT 的效果是非常令人惊艳的，在12个任务里，9个达到了最好的效果，有些任务性能提升非常明显。
 
@@ -749,7 +743,7 @@ $$
 
 ​	BERT 这里并没有像下游监督任务中的普遍做法一样，在 encoding 的基础上再搞个全局池化之类的，它首先在每个 sequence （对于句子对任务来说是两个拼起来的句子，对于其他任务来说是一个句子）前面加了一个特殊的 token ，记为 [CLS]，如图：
 
-![bert1](.\ELMO\bert1.png)
+![bert1](../images/ELMO/bert1.png)
 
 PS：这里的 [sep] 是句子之间的分隔符，BERT 同时支持学习句对的表示，这里是 [SEP] 便是为了区分句对的切割点。
 
@@ -765,7 +759,7 @@ PS：这做法跟 position embedding 一样感觉简单粗暴，实在很费解�
 
 ​	真正体现出 BERT 这个模型是龙骨级模型而不再是词向量的，就是其到各个下游任务的接口设计了，或者更好的叫迁移策略：
 
-![bert2](.\ELMO\bert2.png)
+![bert2](../images/ELMO/bert2.png)
 
 ​	首先，既然句子和句子对的上层表示都得到了，那么当然对于文本分类任务和文本匹配任务（文本匹配其实也是一种文本分类任务，只不过输入是文本对）来说，只需要用得到的表示（encoder 在 [CLS] 词位的顶层输出）加上一层 MLP 就好了呀
 
@@ -773,11 +767,11 @@ PS：这做法跟 position embedding 一样感觉简单粗暴，实在很费解�
 
 ​	在 spen 抽取式任务如 SQuAD 上，把深度 encoding 和深度 attention 这俩大礼包省掉就算了，甚至都敢直接把输出层的 pointer net 给丢掉了？直接像 DrQA 那样傲娇的用两个线性分类器分别输出 span 的起点和终点。
 
-![bert3](.\ELMO\bert3.png)
+![bert3](../images/ELMO/bert3.png)
 
 #### 3.5.8 BERT：效果如何
 
-![bert4](.\ELMO\bert4.png)
+![bert4](../images/ELMO/bert4.png)
 
 
 

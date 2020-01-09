@@ -37,7 +37,7 @@
 4. 处理完的样本和样本标签形成元组，并放入 tf.train.shuffle_batch 中形成批次数据
 5. 最后将批次数据输入模型，进行训练；
 
-![tensorflow预处理流程图](./图片/tensorflow预处理流程图.png)
+![tensorflow预处理流程图](../images/tensorflow utils/tensorflow预处理流程图.png)
 
 ## 2. 高层方式：Dataset
 

@@ -9,35 +9,40 @@
 ## 2. N-gram的定义
 
 1. N-gram （N元语法）是一个统计语言模型，首先对于 $$ P(w_1,w_2, \cdots w_n) $$  计算，可以通过链式法则可以得到下式：
-
-   ![P(w_1,w_2,...,w_n)=P(w_1)P(w_2|w_1)\cdot\cdot\cdot P(w_n|w_1,...,w_{n-1})](https://www.zhihu.com/equation?tex=P%28w_1%2Cw_2%2C...%2Cw_n%29%3DP%28w_1%29P%28w_2%7Cw_1%29%5Ccdot%5Ccdot%5Ccdot+P%28w_n%7Cw_1%2C...%2Cw_%7Bn-1%7D%29)
-
+$$
+   P(w_1,w_2,...,w_n)=P(w_1)P(w_2|w_1)\cdot\cdot\cdot P(w_n|w_1,...,w_{n-1})
+$$
    在统计语言模型中，采用极大似然估计来计算每个词出现的条件概率，即
-
-   ![\begin{align} P(w_i|w_1,...,w_{i-1})&=\frac{C(w_1,w_2,...,w_i)}{\sum_{w}C(w_1,w_2,..w_{i-1},w)}\\ &\overset{\text{?}}{=}\frac{C(w_1,w_2,...,w_i)}{C(w_1,w_2,..w_{i-1})} \end{align} ](https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7D+P%28w_i%7Cw_1%2C...%2Cw_%7Bi-1%7D%29%26%3D%5Cfrac%7BC%28w_1%2Cw_2%2C...%2Cw_i%29%7D%7B%5Csum_%7Bw%7DC%28w_1%2Cw_2%2C..w_%7Bi-1%7D%2Cw%29%7D%5C%5C+%26%5Coverset%7B%5Ctext%7B%3F%7D%7D%7B%3D%7D%5Cfrac%7BC%28w_1%2Cw_2%2C...%2Cw_i%29%7D%7BC%28w_1%2Cw_2%2C..w_%7Bi-1%7D%29%7D+%5Cend%7Balign%7D+)
-
+$$
+   \begin{align} P(w_i|w_1,...,w_{i-1})&=\frac{C(w_1,w_2,...,w_i)}{\sum_{w}C(w_1,w_2,..w_{i-1},w)}\\ &\overset{\text{?}}{=}\frac{C(w_1,w_2,...,w_i)}{C(w_1,w_2,..w_{i-1})} \end{align}
+$$
    分子：从语料库中查询 $$ w_1,w_2, \cdots w_{i-1} $$ ,  $$ w_i $$  这个序列出现的频次；
 
    分母：从语料库中查询 $$ w_1,w_2, \cdots w_{i-1} $$ 这个序列出现的频次；
 
 2. 对于任意长的自然语言语句，根据极大似然估计直接计算 $$ P(w_i | w_1, w_2, \cdots  w_{i-1}) $$ 是不现实的。为了解决这个问题，我们引入马尔可夫假设，即假设当前词出现的概率只依赖于前 n-1 个词，可以得到：
-
-   ![P(w_i|w_1,w_2,...,w_{i-1})=P(w_i|w_{i-n+1},...,w_{i-1})](https://www.zhihu.com/equation?tex=P%28w_i%7Cw_1%2Cw_2%2C...%2Cw_%7Bi-1%7D%29%3DP%28w_i%7Cw_%7Bi-n%2B1%7D%2C...%2Cw_%7Bi-1%7D%29)
+   $$
+   P(w_i|w_1,w_2,...,w_{i-1})=P(w_i|w_{i-n+1},...,w_{i-1})
+   $$
 
 3. 其中 N-gram 中的 N 代表的是当前单词与其前面 N-1 个单词相关；如当 N = 2 时，则当前单词只跟它前面一个单词相关；当 N = 3 时，则当前单词跟它前面两个单词相关，则定义 n-gram 语言模型如下：
 
    当 N = 1 时：
-
-   ![P(w_1,w_2,...,w_n)=\prod_{i=1}^{n}P(w_i)](https://www.zhihu.com/equation?tex=P%28w_1%2Cw_2%2C...%2Cw_n%29%3D%5Cprod_%7Bi%3D1%7D%5E%7Bn%7DP%28w_i%29)
-
+   $$
+   P(w_1,w_2,...,w_n)=\prod_{i=1}^{n}P(w_i)
+   $$
    当 N = 2 时：
 
-   ![P(w_1,w_2,...,w_n)=\prod_{i=1}^{n}P(w_i|w_{i-1})](https://www.zhihu.com/equation?tex=P%28w_1%2Cw_2%2C...%2Cw_n%29%3D%5Cprod_%7Bi%3D1%7D%5E%7Bn%7DP%28w_i%7Cw_%7Bi-1%7D%29)
+   $$
+   P(w_1,w_2,...,w_n)=\prod_{i=1}^{n}P(w_i|w_{i-1})
+   $$
+   
 
    当 N = 3 时：
 
-   ![P(w_1,w_2,...,w_n)=\prod_{i=1}^{n}P(w_i|w_{i-2},w_{i-1})](https://www.zhihu.com/equation?tex=P%28w_1%2Cw_2%2C...%2Cw_n%29%3D%5Cprod_%7Bi%3D1%7D%5E%7Bn%7DP%28w_i%7Cw_%7Bi-2%7D%2Cw_%7Bi-1%7D%29)
-
+   $$
+   P(w_1,w_2,...,w_n)=\prod_{i=1}^{n}P(w_i|w_{i-2},w_{i-1})
+   $$
    ...
 
    其中，当 n > 1 时，为了使句首词的条件概率有意义，需要给原序列加上一个或多个起始符 <S> 。可以说起始符的作用就是为了**表征句首词出现的条件概率**。
@@ -46,7 +51,7 @@
 
 4. 此处说明一下序列结束符</s> 的意义，举例如下：
 
-   ![1553769085110](./n-gram/1553769085110.png)
+   ![1553769085110](../images/n-gram/1553769085110.png)
 
    当列举序列长度为 3 的时候，结论跟上面的一样。而语言模型是建模所有句子的概率分布。但上述结果中当序列长度为2时，其概率已经等于1，则说明长度不等于2的序列不存在？故上述结果与语言模型是建模所有句子的概率分布相矛盾。故得出结论如下：
 

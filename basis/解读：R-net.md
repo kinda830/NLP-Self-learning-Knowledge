@@ -4,7 +4,7 @@ R-Net 论文：https://www.microsoft.com/en-us/research/wp-content/uploads/2017/
 
 ## R-net 结构图
 
-![R-net结构图](./R-net结构图.png)
+![R-net结构图](../images/R-net/R-net结构图.png)
 
 ​	R-NET模型一共分为四个步骤，分别为QUESTION AND PASSAGE ENCODER, GATED ATTENTION-BASED RECURRENT NETWORKS, SELF-MATCHING ATTENTION, OUTPUT LAYER, 基本结构可观察上面所示的结构图。
 
@@ -151,5 +151,5 @@ $$
 
 ​	不过再具体实验中还有一个小trick对提升效果很有用，由于我们得到了两个分布，，通过两个分布我们可以得到一个联合分布，在计算中可以表示为一个矩阵，然而由于开始位置永远在终止位置之前，所以我们的选择区域始终在矩阵对角线的左上半部分。又因为答案的长度有一定范围，我们可以设置答案的最大长度，所以最后的训责区域只是一个若当标准型矩阵的。
 
-![R-net结构图2](./R-net结构图2.png)
+![R-net结构图2](../images/R-net/R-net结构图2.png)
 

@@ -42,11 +42,11 @@
 
 **模型的输出概率代表着到我们词典中每个词有多大可能性跟input word同时出现**。下面的图中给出了一些我们的训练样本的例子。我们选定句子**“The quick brown fox jumps over lazy dog”**，设定我们的窗口大小为2（window_size=2），也就是说我们仅选输入词前后各两个词和输入词进行组合。下图中，蓝色代表input word，方框内代表位于窗口内的单词。
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b319eb5f1f.png?imageMogr2/format/jpg/quality/90)
+![word2vec](../images/NLP/word2vec.png)
 
 ### 模型细节
 
-![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b31d0920ef.png?imageMogr2/format/jpg/quality/90)
+![skip_gram](../images/NLP/skip_gram.png)
 
 ​	skip-gram 的训练模型共分三层，分别为输入层、隐层和输出层，下面分成三个部分进行讲解。
 
@@ -68,7 +68,7 @@
 
 3. 下面图片是不同角度下输入层-隐层的权重矩阵的解释：左图中每一列代表一个10000维的词向量和隐层单个神经元连接的权重向量；右图中每一行实际上代表了每个单词的词向量。
 
-   ![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b320f8ed60.png?imageMogr2/format/jpg/quality/90)
+   ![word_embedding](../images/NLP/word_embedding.png)
 
 4. 10000维下的矩阵运算是十分低效的。为了有效地进行计算，这种稀疏状态下不会进行矩阵乘法计算，可以看到矩阵的计算的结果实际上是矩阵对应的向量中值为1 的索引，这样模型中的隐层权重矩阵便成了一个“查找表”，进行矩阵运算，直接去查输入向量中取值为1的维度下对应的那些权重值。
 
@@ -80,5 +80,5 @@
 
 2. 输出层就是一个softmax回归分类器，它的每个结点将会输出一个 0-1 之间的值（概率），这些所有输出层神经元结点的概率之和为1：
 
-   ![ä¸æè¯¦è§£ Word2vec ä¹ Skip-Gram æ¨¡åï¼ç"æç¯ï¼](https://static.leiphone.com/uploads/new/article/740_740/201706/594b3267c64f4.png?imageMogr2/format/jpg/quality/90)
+   ![lookup](../images/NLP/lookup.png)
 

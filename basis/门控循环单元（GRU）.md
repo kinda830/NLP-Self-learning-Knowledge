@@ -6,7 +6,7 @@
 
 ​	在 LSTM 中引入了三个门函数：输入门、遗忘门和输出门来控制输入值、记忆值和输出值。而在 GRU 模型中只有两个门：分别是更新门和重置门。具体结构如下图所示：
 
-![img](https://images2018.cnblogs.com/blog/1335117/201807/1335117-20180727095108158-462781335.png)
+![GRU结构图](../images/GRU/GRU结构图.png)
 
 ​	图中的 Zt 和 rt 分别表示更新门和重置门。
 
@@ -16,15 +16,11 @@
 ## GRU 前向传播
 
 ​	根据上面的 GRU 的模型图，我们来看看网络的前向传播公式：
-
-![img](https://images2018.cnblogs.com/blog/1335117/201807/1335117-20180727095844468-782564539.png)
-
-![img](https://images2018.cnblogs.com/blog/1335117/201807/1335117-20180727095855399-1902435868.png)
-
-![img](https://images2018.cnblogs.com/blog/1335117/201807/1335117-20180727095907476-585519056.png)
-
-![img](https://images2018.cnblogs.com/blog/1335117/201807/1335117-20180727095935319-1953536983.png)
-
-![img](https://images2018.cnblogs.com/blog/1335117/201807/1335117-20180727095950130-860185703.png)
-
+$$
+r_t = \sigma(W_r \cdot [h_{t-1}, x_t]) \\
+z_t = \sigma(W_z \cdot [h_{t-1}, x_t]) \\
+\tilde h_t = tanh(W_{\tilde h} \cdot [r_t \ast h_{t-1}, x_t]) \\
+h_t = (1-z_t) \ast h_{t-1} + z_t \ast \tilde h_t \\
+y_t = \sigma(W_o \cdot h_t)
+$$
 其中 [] 表示两个向量相连，* 表示矩阵的乘积。

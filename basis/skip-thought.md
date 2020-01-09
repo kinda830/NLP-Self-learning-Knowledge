@@ -4,7 +4,7 @@
 
 ​	skip-thought 模型结构借鉴来 skip-gram 的思想。在 skip-gram 中，是以中心的来预测上下文的词；在 skip-thought 中是以中心句子来预测上下文的句子。其数据结构可以用一个三元组表示（S_t-1, S_t, S_t+1）输入 S_t，输出为 S_t-1 和 S_t+1，具体模型架构如下：
 
-![skip-thought](./skip-thought/skip-thought.png)
+![skip-thought](../images/skip-thought/skip-thought.png)
 
 ## 2. 神经网络结构
 
@@ -12,16 +12,24 @@
 
 ### 2.1. 编码阶段
 
-​	![1335117-20180913123843087-2112167391](./skip-thought/1335117-20180913123843087-2112167391.png)
+$$
+r^t = \sigma(W_rX^t + U_rh^{t-1}) \\
+z^t = \sigma(W_xX^t + U_zH^{t-1}) \\
+\overline h^t = tanh(WX^t + U(r^t \odot h^{t-1})) \\
+h^t = (1-Z^t) \odot h^{t-1} + z^t \odot \overline h^t
+$$
 
 ​	公式跟 GRU 是一样的，h_t 表示 t 时刻的隐层的输出结果。
 
 ### 2.2. 解码阶段
 
 ​	以 S_t 为例，S_t-1 相同：
-
-![1335117-20180913124122503-1133548780](./skip-thought/1335117-20180913124122503-1133548780.png)
-
+$$
+r^t = \sigma(W^d_r X^{t-1} + U^d_r h^{t-1} + C_r h_i) \\
+z^t = \sigma(W^d_z X^{t-1} + U^d_z h^{t-1} + C_z h_i) \\
+\overline h^t = tanh(W^d x^{t-1} + U^d(r^t \odot h^{t-1}) + Xh_i) \\
+h^t_{i+1} = (1-Z^t) \odot h^{t-1} + z^t \odot \overline h^t
+$$
 其中 C_r、C_z、C 分别用来对重置门、更新门、隐层进行向量偏置的。
 
 ## 3. 词汇扩展
@@ -108,7 +116,7 @@ def _get_target(sentences, index, window_size=1):
         return list(targets)
 ```
 
-6. 构造一个生成器，按照 batch_size 将文本列表分割为大小相等的训练 batch，由于每个batch中的句子字数不一定相等，这里需要将句子缺失部分进行 padding。[完整的代码路径：/Users/kinda/deeplearning/tensorflow_tutorial]
+6. 构造一个生成器，按照 batch_size 将文本列表分割为大小相等的训练 batch，由于每个batch中的句子字数不一定相等，这里需要将句子缺失部分进行 padding。
 
 #### 4.2.2 模型输入定义
 

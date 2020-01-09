@@ -2,7 +2,7 @@
 
 ## 1. 模型结构
 
-![20181213150803869](ESIM/20181213150803869.png)
+![20181213150803869](../images/ESIM/20181213150803869.png)
 
 ESIM主要分为三部分：**input encoding**，**local inference modeling** 和 **inference composition**。如上图所示，ESIM 是左边一部分。
 
@@ -17,7 +17,7 @@ $$
 
 ### 1.2 local inference encoding
 
-​	使用 Decomposable Attention 分别对 p 和 h 做权重计算，得到 attention 权重$$\hat{a};\hat{b}$$
+​	使用 Decomposable Attention 分别对 p 和 h 做权重计算，得到 attention 权重 $$\hat{a};\hat{b}$$
 $$
 \hat{a}_i = \sum^{l_b}_{j=1}\frac{exp_{ij}}{\sum^{l_b}_{k=1}exp(e_{ik})}\overline{b};\forall i \in [1,2,\cdots,l_a]\\
 \hat{b}_i = \sum^{l_a}_{j=1}\frac{exp_{ij}}{\sum^{l_a}_{k=1}exp(e_{ik})}\overline{a};\forall i \in [1,2,\cdots,l_b]
